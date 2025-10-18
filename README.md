@@ -1,5 +1,5 @@
 
-# easywin
+# EasyWin
  a simple abstraction of windows.h
 # install
 **set the folder put easywin.h in devc++ like \......\w\include or something in vscode setting**
