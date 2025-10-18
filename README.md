@@ -1,7 +1,10 @@
+
 # easywin
  a simple abstraction of windows.h
-
- **usage**
+# install
+**set the folder put easywin.h in devc++ like \......\w\include or something in vscode setting**
+---
+ **example**
 ``` 
   #include<stdio.h>
   #include "easywin.h"
@@ -21,7 +24,10 @@
  	return 0;
  }
 ```
-**用法**
+# 安裝
+**在dev c++設定放easywin.h的目錄如\....\w\include 或在vscode的類似設定**
+---
+**範例**
 ```
   #include<stdio.h>
   #include "easywin.h"
