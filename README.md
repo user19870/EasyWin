@@ -1,11 +1,18 @@
 ![GitHub stars](https://img.shields.io/github/stars/user19870/EasyWinGui?style=social)
 ![License](https://img.shields.io/github/license/user19870/EasyWinGui)
 # EasyWinGui
- EasyWinGui: a simple gui library for c++ ---windows only
+ **EasyWinGui: a simple gui library for c++ ---windows only**
 ## install
-**set the folder put easywingui.h in devc++ like \......\w\include or something in vscode setting**
----
- **example**
+set the folder put easywingui.h in devc++ like \......\w\include or something in vscode setting
+ 
+### feature
+  xxx.creatw(L"title",weight,height) >is used to creat a window(only show one window)
+  xxx.button(L"buttonText",x,y,weight,height,func) > can creat a button and call a void function with no parameter when click the button (y=0 is top,not bottom)
+  xxx.inputbox("id",x,y,weight,height,func) > can creat an inputbox with its own id, func is same as that in button but usually be nullptr 
+  xxx.getinput_w("id") or .getinput_s("id") > is method to get index from an inputbox with specific id and w/s is wchar_t/string (char*)
+  xxx.loop() > without loop() the window will close quickly. It must be put after th last feature because when it is called button/inputbox won't update anymore .
+
+ ### example
 ``` 
   #include<stdio.h>
   #include "easywingui.h"
@@ -25,11 +32,12 @@
  	return 0;
  }
 ```
+
 ## 安裝
 EasyWinGui:簡單的c++ 圖形庫
 **在dev c++設定放easywingui.h的目錄如\....\w\include 或在vscode的類似設定**
 ---
-**範例**
+### 範例
 ```
   #include<stdio.h>
   #include "easywingui.h"
