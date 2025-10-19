@@ -1,6 +1,6 @@
 
-# EasyWin
- EasyWin: a simple gui library for c++ ---windows only
+# EasyWinGui
+ EasyWinGui: a simple gui library for c++ ---windows only
 # install
 **set the folder put easywin.h in devc++ like \......\w\include or something in vscode setting**
 ---
@@ -25,6 +25,7 @@
  }
 ```
 # 安裝
+EasyWinGui:簡單的c++ 圖形庫
 **在dev c++設定放easywin.h的目錄如\....\w\include 或在vscode的類似設定**
 ---
 **範例**
