@@ -2,14 +2,14 @@
 # EasyWinGui
  EasyWinGui: a simple gui library for c++ ---windows only
 # install
-**set the folder put easywin.h in devc++ like \......\w\include or something in vscode setting**
+**set the folder put easywingui.h in devc++ like \......\w\include or something in vscode setting**
 ---
  **example**
 ``` 
   #include<stdio.h>
-  #include "easywin.h"
+  #include "easywingui.h"
  
- using namespace easywin;easyw c;
+ using namespace easywingui;easyw c;
    void c1(){
    wchar_t* td =c.getinput_w("id1");MessageBox(NULL,td,L"",MB_ICONEXCLAMATION | MB_YESNO);
  } 
@@ -26,14 +26,14 @@
 ```
 # 安裝
 EasyWinGui:簡單的c++ 圖形庫
-**在dev c++設定放easywin.h的目錄如\....\w\include 或在vscode的類似設定**
+**在dev c++設定放easywingui.h的目錄如\....\w\include 或在vscode的類似設定**
 ---
 **範例**
 ```
   #include<stdio.h>
-  #include "easywin.h"
+  #include "easywingui.h"
  
- using namespace easywin;easyw c;
+ using namespace easywingui;easyw c;
    void c1(){
    wchar_t* td =c.getinput_w("id1");MessageBox(NULL,td,L"",MB_ICONEXCLAMATION | MB_YESNO);
  } 
