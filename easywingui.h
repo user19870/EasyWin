@@ -5,7 +5,7 @@
 #include <windowsx.h>
 #include <windows.h>
  
-namespace easywin {
+namespace easywingui {
 	struct Button {
     HWND hButton;
     void (*onClick)();
@@ -196,3 +196,4 @@ inline void resize(int width, int height) {
      
 };
 }
+
