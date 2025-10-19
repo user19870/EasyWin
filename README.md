@@ -1,6 +1,6 @@
 
 # EasyWin
- a simple abstraction of windows.h
+ EasyWin: a simple gui library for c++ ---windows only
 # install
 **set the folder put easywin.h in devc++ like \......\w\include or something in vscode setting**
 ---
