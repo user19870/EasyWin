@@ -15,7 +15,7 @@ set the folder put easywingui.h in devc++ like \......\w\include or something in
  ### example
 ``` cpp
   #include<stdio.h>
-  #include "easywingui.h"
+  #include "easywingui.h" // or <easywingui.h>
  
  using namespace easywingui;easyw c;
    void c1(){
@@ -46,7 +46,7 @@ EasyWinGui:簡單的c++ 圖形庫
 ### 範例
 ```cpp
   #include<stdio.h>
-  #include "easywingui.h"
+  #include "easywingui.h" //或<easywingui.h>
  
  using namespace easywingui;easyw c;
    void c1(){
