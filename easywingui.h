@@ -1,3 +1,4 @@
+
  #pragma once
 #define UNICODE
 #define WIN32_LEAN_AND_MEAN
@@ -28,28 +29,61 @@ volatile  bool running = false;
 // --- 這兩個函式指標讓外部可以註冊 callback ---
 void (*onButtonClick)() = nullptr;
 void (*onInputChange)(const wchar_t*) = nullptr;
-
+ 
 // 控件句柄（只記錄一個）
 HWND hButton = nullptr;
 HWND hEdit = nullptr;
 
 
-
-// --- 結束循環 ---
+//狀態判斷
  
-inline void stoploop() {
-     running = false;	  
-       if (hwnd) PostMessage(hwnd, WM_NULL, 0, 0);
+// --- 結束循環 ---
+ HANDLE stopEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
+ 
+ void stoploop() {
+  running = false;hwnd = nullptr;
+   //  SetEvent(stopEvent);          // 通知 loop 停止
+    PostMessage(hwnd, WM_NULL, 0, 0);  // 喚醒消息循環
+ 
 }
 // --- 主循環 --- 
-inline void loop() {
-             running=true;
-		  MSG msg;	
-		  		   while(running)
+MSG msg ;
+void (*runperframe)()=nullptr;
+inline void runMessage(void(*Runperframe)()){ 
             while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
-            TranslateMessage(&msg);
-            if(!running) break;
-            DispatchMessage(&msg);    }
+            	if (msg.message == WM_QUIT) {  running = false;break;}
+            	runperframe=Runperframe;
+                TranslateMessage(&msg);
+                DispatchMessage(&msg);
+            }  
+}
+inline void loopAndStopProcessing() {
+    	running = true;
+   HANDLE handles[] = { stopEvent };
+      //  HANDLE timerHandle = CreateWaitableTimer(NULL, FALSE, NULL);
+		  	
+	  // SetTimer(  hwnd, 1, 16, NULL);
+  while ( running) {
+        DWORD result = MsgWaitForMultipleObjectsEx(
+            1,handles, INFINITE, QS_ALLINPUT, MWMO_ALERTABLE| MWMO_INPUTAVAILABLE
+        );
+
+        if (result == WAIT_OBJECT_0) {
+            // 處理定時器事件  
+         break;
+            // 這裡可以進行渲染或更新操作
+        } else if (result == WAIT_OBJECT_0 + 1) {
+            // 處理消息隊列中的消息
+            while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
+            	if (msg.message == WM_QUIT) {  running = false;break;}
+                TranslateMessage(&msg);
+                DispatchMessage(&msg);
+            }
+             
+        }
+    }
+ 
+  // CloseHandle(timerHandle);
 }
 // --- 建立視窗 ---
 inline void creatw(const wchar_t* title, int width, int height) {
@@ -66,10 +100,11 @@ inline void creatw(const wchar_t* title, int width, int height) {
         WS_OVERLAPPEDWINDOW,
         CW_USEDEFAULT, CW_USEDEFAULT, width, height,
         nullptr, nullptr, GetModuleHandle(nullptr), this);
-
+ 
     if (!hwnd) return;
 
     ShowWindow(hwnd, SW_SHOW);
+    
   //  running = true;
 }
 //刪除視窗
@@ -130,6 +165,9 @@ inline void resize(int width, int height) {
        // loop();//導致訊息堵塞
     } 
 }
+//執行續
+ 
+ 
 // 核心
      LRESULT CALLBACK procfeature(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
         switch (uMsg) {
@@ -149,10 +187,12 @@ inline void resize(int width, int height) {
 }
             return 0;
         }
+ 
         case WM_SIZE:
             InvalidateRect(hwnd, nullptr, TRUE);
             return 0;
         case WM_PAINT: {
+        	if (runperframe) runperframe();
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hwnd, &ps);
             FillRect(hdc, &ps.rcPaint, (HBRUSH)(COLOR_WINDOW + 1));
@@ -160,7 +200,7 @@ inline void resize(int width, int height) {
             return 0;
         }
         case WM_CLOSE:{
-			  DestroyWindow(hwnd);           // 點右上角 X 時
+			  DestroyWindow(hwnd); PostQuitMessage(0);          // 點右上角 X 時
         return 0;
 		}
       
@@ -196,4 +236,3 @@ inline void resize(int width, int height) {
      
 };
 }
-
