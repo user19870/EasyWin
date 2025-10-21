@@ -44,7 +44,7 @@ EasyWinGui:簡單的c++ 圖形庫
 -  xxx.getinput_w("id") or .getinput_s("id") > 可以從指定id的輸入框獲得寬字串、字串
 -  xxx.loopAndStopProcessing() > 有這個才能避免視窗閃退，但呼叫後按鈕、輸入框等物件不能更新或新增
  -  xxx.runMessage(func) > 跟上個類似，但你必須自己寫一個循環並把它放進去，func可以放一個無參數void用來更新東西
- -   #### 更多功能在   [簡易](example/simple)  和 [仔細](example/detailed)
+ -   #### 更多功能在   [簡易用法](example/simple)  和 [精細用法](example/detailed)
 ### 範例
 ```cpp
   #include<stdio.h>
