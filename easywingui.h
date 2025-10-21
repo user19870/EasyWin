@@ -1,3 +1,4 @@
+
  #pragma once
 #define UNICODE
 #define WIN32_LEAN_AND_MEAN
@@ -88,7 +89,7 @@ inline void creatw(const wchar_t* title, int width, int height) {
         WS_OVERLAPPEDWINDOW,
         CW_USEDEFAULT, CW_USEDEFAULT, width, height,
         nullptr, nullptr, GetModuleHandle(nullptr), this);
- SetTimer(hwnd, 1, 16, nullptr);
+ 
     if (!hwnd) return;
 
     ShowWindow(hwnd, SW_SHOW);
@@ -175,10 +176,7 @@ inline void resize(int width, int height) {
 }
             return 0;
         }
-        case WM_TIMER:{
-          loop();
-			break;
-		}
+ 
         case WM_SIZE:
             InvalidateRect(hwnd, nullptr, TRUE);
             return 0;
