@@ -12,7 +12,7 @@ set the folder put easywingui.h in devc++ like \......\w\include or something in
 -  xxx.getinput_w("id") or .getinput_s("id") > is method to get index from an inputbox with specific id and w/s is wchar_t/string (char*)
 -  xxx.loopAndStopProcessing() > without loopAndStopProcessing() the window will close quickly. It must be put after th last feature because when it is called button/inputbox won't update anymore 
 -  xxx.runMessage(func) > like previous one but you need to put it in your own loop and throw a void(no parameter) when running your loop ,you can update something throught the void
--  #### more features in [simple](example/simple)  and [detailed](example/detailed)
+-  #### more features in [simple](https://github.com/user19870/EasyWinGui/tree/First/example/simple)  and [detailed](https://github.com/user19870/EasyWinGui/tree/First/example/detailed)
  ### example
 ``` cpp
   #include<stdio.h>
@@ -44,7 +44,7 @@ EasyWinGui:簡單的c++ 圖形庫
 -  xxx.getinput_w("id") or .getinput_s("id") > 可以從指定id的輸入框獲得寬字串、字串
 -  xxx.loopAndStopProcessing() > 有這個才能避免視窗閃退，但呼叫後按鈕、輸入框等物件不能更新或新增
  -  xxx.runMessage(func) > 跟上個類似，但你必須自己寫一個循環並把它放進去，func可以放一個無參數void用來更新東西
- -   #### 更多功能在   [簡易用法](example/simple)  和 [精細用法](example/detailed)
+ -   #### 更多功能在   [簡易用法](https://github.com/user19870/EasyWinGui/tree/First/example/simple)  和 [精細用法](https://github.com/user19870/EasyWinGui/tree/First/example/detailed)
 ### 範例
 ```cpp
   #include<stdio.h>
