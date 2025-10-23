@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en-US"><head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>EasyWinGui | EasyWinGui: a simple gui library for c++ —windows only</title>
+<meta name="generator" content="Jekyll v3.10.0">
+  <meta name="google-site-verification" content="QCuFyMM8Uy6wFi4eD1HH5wX1RbuF5_WY4HkLrbmPLXE" />
+<meta property="og:title" content="EasyWinGui">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="EasyWinGui: a simple gui library for c++ —windows only">
+<meta property="og:description" content="EasyWinGui: a simple gui library for c++ —windows only">
+<link rel="canonical" href="https://user19870.github.io/EasyWinGui/">
+<meta property="og:url" content="https://user19870.github.io/EasyWinGui/">
+<meta property="og:site_name" content="EasyWinGui">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="EasyWinGui">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","description":"EasyWinGui: a simple gui library for c++ —windows only","headline":"EasyWinGui","name":"EasyWinGui","url":"https://user19870.github.io/EasyWinGui/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <style class="anchorjs"></style><link rel="stylesheet" href="/EasyWinGui/assets/css/style.css?v=a905a6530e38e461631c04e3d8a124616b6aeb52">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/EasyWinGui/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="https://user19870.github.io/EasyWinGui/">EasyWinGui</a></h1>
+      
+
+      <p><img src="https://img.shields.io/github/stars/user19870/EasyWinGui?style=social" alt="GitHub stars">
+<img src="https://img.shields.io/github/license/user19870/EasyWinGui" alt="License"></p>
+<h1 id="easywingui">EasyWinGui</h1>
+<p><strong>EasyWinGui: a simple gui library for c++ —windows only</strong></p>
+<h2 id="install">install<a class="anchorjs-link " href="#install" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+<p>set the folder put easywingui.h in devc++ like .…..\w\include or something in vscode setting</p>
+
+<h3 id="feature">feature<a class="anchorjs-link " href="#feature" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+<ul>
+  <li>xxx.creatw(L”title”,weight,height) &gt;is used to creat a window(only show one window)`</li>
+  <li>xxx.button(L”buttonText”,x,y,weight,height,func) &gt; can creat a button and call a void function with no parameter when click the button (y=0 is top,not bottom)</li>
+  <li>xxx.inputbox(“id”,x,y,weight,height,func) &gt; can creat an inputbox with its own id, func is same as that in button but usually be nullptr</li>
+  <li>xxx.getinput_w(“id”) or .getinput_s(“id”) &gt; is method to get index from an inputbox with specific id and w/s is wchar_t/string (char*)</li>
+  <li>xxx.loopAndStopProcessing() &gt; without loopAndStopProcessing() the window will close quickly. It must be put after th last feature because when it is called button/inputbox won’t update anymore</li>
+  <li>xxx.runMessage(func) &gt; like previous one but you need to put it in your own loop and throw a void(no parameter) when running your loop ,you can update something throught the void</li>
+  <li>
+    <h4 id="more-features-in-simple--and-detailed">more features in <a href="https://github.com/user19870/EasyWinGui/tree/First/example/simple">simple</a>  and <a href="https://github.com/user19870/EasyWinGui/tree/First/example/detailed">detailed</a><a class="anchorjs-link " href="#more-features-in-simple--and-detailed" aria-label="Anchor" data-anchorjs-icon="" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+    <p>### example
+``` cpp
+  #include<stdio.h>
+  #include "easywingui.h" // or <easywingui.h></easywingui.h></stdio.h></p>
+  </li>
+</ul>
+
+<p>using namespace easywingui;easyw c;
+   void c1(){
+   wchar_t* td =c.getinput_w(“id1”);MessageBox(NULL,td,L”“,MB_ICONEXCLAMATION | MB_YESNO);
+ } 
+ void c2(){
+   wchar_t* td =c.getinput_w(“id2”);MessageBox(NULL,td,L”“,MB_ICONEXCLAMATION | MB_YESNO);
+ } 
+ int main(){</p>
+
+ 	c.creatw(L”hellowinTitle”,400,400);c.button(L”textinbutton”,150,500,100,100,c1);c.inputbox(“id1”,500,150,100,100,nullptr);
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> c.button(L"textinbutton",1500,500,100,100,c2);c.inputbox("id2",500,300,100,100,nullptr);c.loopAndStopProcessing();  
+</code></pre></div></div>
+
+ 	return 0;
+<p>}</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+## 安裝
+EasyWinGui:簡單的c++ 圖形庫
+**在dev c++設定放easywingui.h的目錄如\....\w\include 或在vscode的類似設定**
+### 功能
+- xxx.creatw(L"title",weight,height) &gt;用於創建視窗(一次只能顯示一個)
+ - xxx.button(L"buttonText",x,y,weight,height,func) &gt; 創建按鈕且按下可呼叫無參數void 函數，但被呼叫函數寫func而不是func()
+ - xxx.inputbox("id",x,y,weight,height,func) &gt; 創建輸入框並為輸入框設定字串id，func欄位 和button()相同但通常設為nullptr
+-  xxx.getinput_w("id") or .getinput_s("id") &gt; 可以從指定id的輸入框獲得寬字串、字串
+-  xxx.loopAndStopProcessing() &gt; 有這個才能避免視窗閃退，但呼叫後按鈕、輸入框等物件不能更新或新增
+ -  xxx.runMessage(func) &gt; 跟上個類似，但你必須自己寫一個循環並把它放進去，func可以放一個無參數void用來更新東西
+ -   #### 更多功能在   [簡易用法](https://github.com/user19870/EasyWinGui/tree/First/example/simple)  和 [精細用法](https://github.com/user19870/EasyWinGui/tree/First/example/detailed)
+### 範例
+```cpp
+  #include&lt;stdio.h&gt;
+  #include "easywingui.h" //或&lt;easywingui.h&gt;
+ 
+ using namespace easywingui;easyw c;
+   void c1(){
+   wchar_t* td =c.getinput_w("id1");MessageBox(NULL,td,L"",MB_ICONEXCLAMATION | MB_YESNO);
+ } 
+ void c2(){
+   wchar_t* td =c.getinput_w("id2");MessageBox(NULL,td,L"",MB_ICONEXCLAMATION | MB_YESNO);
+ } 
+ int main(){ 
+ 
+ 	c.creatw(L"你好",400,400);c.button(L"按鈕",150,500,100,100,c1);c.inputbox("id1",500,150,100,100,nullptr);
+	 c.button(L"按鈕",1500,500,100,100,c2);c.inputbox("id2",500,300,100,100,nullptr);c.loopAndStopProcessing();  
+ 
+ 	return 0;
+ }
+</code></pre></div></div>
+
+
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+  
+
+</body></html>
