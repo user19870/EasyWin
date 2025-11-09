@@ -5,7 +5,17 @@
 #define NOMINMAX
 #include <windowsx.h>
 #include <windows.h>
- 
+
+ #ifndef _INC_STDIO
+ #include <stdio.h>
+ #endif
+/* #ifndef __gl_h_
+#ifndef __GL_H__
+#include <GL/gl.h>
+#pragma comment(lib, "opengl32.lib")
+#define __gl_h_
+#define __GL_H__
+ */
 namespace easywingui {
 	struct Button {
     HWND hButton;
@@ -22,23 +32,38 @@ namespace easywingui {
     static void* operator new(size_t size) { void* ptr= malloc(size); return ptr;}
     static void operator delete(void* ptr) {free(ptr);}
 };
+    struct Label{
+    HWND hLabel;
+    Label* next;wchar_t labelbuf[256];
+     static void* operator new(size_t size) { void* ptr= malloc(size); return ptr;}
+    static void operator delete(void* ptr) {free(ptr);}
+    };
 class easyw{
+    private:
+    Button* buttonHead = nullptr;Button* btn;Inputbox* itb;
+Button* buttonTail = nullptr;
+Label* labelHead = nullptr;Label* labelTail = nullptr;
+    // --- 這兩個函式指標讓外部可以註冊 callback ---
+void (*onButtonClick)() = nullptr;
+void (*onInputChange)(const wchar_t*) = nullptr;
+void (*onChange)(const wchar_t*);
+Inputbox* inputboxHead = nullptr;
+Inputbox* inputboxTail = nullptr;
+HANDLE stopEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
+void (*runperframe)()=nullptr;
+////////////////////////
 	public:
 HWND hwnd = nullptr;
 volatile  bool running = false;
-// --- 這兩個函式指標讓外部可以註冊 callback ---
-void (*onButtonClick)() = nullptr;
-void (*onInputChange)(const wchar_t*) = nullptr;
+
  
 // 控件句柄（只記錄一個）
-HWND hButton = nullptr;
-HWND hEdit = nullptr;
-
-
+//HWND hButton = nullptr;
+//HWND hEdit = nullptr;
 //狀態判斷
  
 // --- 結束循環 ---
- HANDLE stopEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
+ 
  
  void stoploop() {
   running = false;hwnd = nullptr;
@@ -48,7 +73,7 @@ HWND hEdit = nullptr;
 }
 // --- 主循環 --- 
 MSG msg ;
-void (*runperframe)()=nullptr;
+
 inline void runMessage(void(*Runperframe)()){ 
             while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
             	if (msg.message == WM_QUIT) {  running = false;break;}
@@ -90,17 +115,19 @@ inline void creatw(const wchar_t* title, int width, int height) {
 
     const wchar_t CLASS_NAME[] = L"MyWindowClass";
     WNDCLASS wc = {};
+  //  wc.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC; // <-- OwnDC 保證 OpenGL 有專屬 DC
+    // wc.hbrBackground = (HBRUSH)(COLOR_WINDOW+1);   // 自動補齊背景
     wc.lpfnWndProc = WindowProc;
     wc.hInstance = GetModuleHandle(nullptr);
     wc.lpszClassName = CLASS_NAME;
     RegisterClass(&wc);
-
+ 
     hwnd = CreateWindowEx(
         0, CLASS_NAME, title,
         WS_OVERLAPPEDWINDOW,
         CW_USEDEFAULT, CW_USEDEFAULT, width, height,
         nullptr, nullptr, GetModuleHandle(nullptr), this);
- 
+     SetTimer(hwnd, 1, 16, NULL); // 每16毫秒觸發一次WM_TIMER
     if (!hwnd) return;
 
     ShowWindow(hwnd, SW_SHOW);
@@ -114,8 +141,7 @@ inline void destroyw() {
         hwnd = nullptr;
   //  }
 }
-Button* buttonHead = nullptr;
-Button* buttonTail = nullptr;
+
 // --- 加按鈕 ---//(L"文字",位置x,位置y,寬,高,fun)，fun為void且不是fun()
 inline void button(const wchar_t* text, int x, int y, int w, int h, void (*onClick)()) {
 	Button* btn=new Button;
@@ -131,9 +157,7 @@ inline void button(const wchar_t* text, int x, int y, int w, int h, void (*onCli
     else { buttonTail->next = btn; buttonTail = btn; }
     
 }
-void (*onChange)(const wchar_t*);
-Inputbox* inputboxHead = nullptr;
-Inputbox* inputboxTail = nullptr;
+
 // --- 加輸入框 ---
 inline void inputbox(const char* id,int x, int y, int w, int h, void (*onChange)(const wchar_t*)) {
 	Inputbox* itb=new Inputbox;
@@ -153,11 +177,20 @@ wchar_t* findinputid(const char* inid){for(Inputbox* fid=inputboxHead;fid;fid=fi
 inline char* getinput_s (const char* inputboxid ){ WideCharToMultiByte(CP_UTF8, 0, findinputid(inputboxid), -1, chbuf, sizeof(chbuf), nullptr, nullptr);return chbuf;}
 inline wchar_t* getinput_w(const char* inputboxid){return findinputid(inputboxid);}
 
+inline void label(const wchar_t* text,int x,int y, int w,int h,const char* left_cneter_right){
+    Label* lbl=new Label;DWORD SS_style= (strcmp(left_cneter_right,"left")==0)?SS_LEFT:((strcmp(left_cneter_right,"right")==0)?SS_RIGHT:SS_CENTER);
+    lbl->hLabel = CreateWindow(L"STATIC", text,
+        WS_VISIBLE | WS_CHILD | SS_style,
+        x, y, w, h, hwnd, nullptr, GetModuleHandle(nullptr), lbl);     
+    lbl->next = nullptr;
+     if (!labelHead) { labelHead = labelTail = lbl; }
+    else { labelTail->next = lbl; labelTail = lbl; }
+}
 // --- 改尺寸 ---
 inline void resize(int width, int height) {
-    stoploop();
+    //stoploop();
    
-    running = true;
+   // running = true;
    
     if (hwnd) {
         SetWindowPos(hwnd, nullptr, 0, 0, width, height, SWP_NOMOVE | SWP_NOZORDER| SWP_FRAMECHANGED);
@@ -165,9 +198,15 @@ inline void resize(int width, int height) {
        // loop();//導致訊息堵塞
     } 
 }
-//執行續
- 
- 
+//釋放資源
+inline void release() {
+    // 刪除按鈕鏈表
+    Button* curbtn= buttonHead; while (curbtn) {Button* next=curbtn->next; DestroyWindow(curbtn->hButton); btn= curbtn;delete btn;curbtn = next;} buttonHead = buttonTail = nullptr; 
+    // 刪除輸入框鏈表
+    Inputbox* curItb = inputboxHead;while (curItb) {Inputbox* nextItb = curItb->next;DestroyWindow(curItb->hEdit);delete curItb; curItb = nextItb; }inputboxHead = inputboxTail = nullptr;
+    Label* curlbl= labelHead; while (curlbl) {Label* nextlbl=curlbl->next; DestroyWindow(curlbl->hLabel); delete curlbl; curlbl=nextlbl;} labelHead=labelTail=nullptr;
+    
+} 
 // 核心
      LRESULT CALLBACK procfeature(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
         switch (uMsg) {
@@ -187,17 +226,25 @@ inline void resize(int width, int height) {
 }
             return 0;
         }
+         case WM_ERASEBKGND:
  
+    return 0;
         case WM_SIZE:
             InvalidateRect(hwnd, nullptr, TRUE);
             return 0;
         case WM_PAINT: {
-        	if (runperframe) runperframe();
+        	
+        	 //ValidateRect(hwnd, NULL);
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hwnd, &ps);
             FillRect(hdc, &ps.rcPaint, (HBRUSH)(COLOR_WINDOW + 1));
             EndPaint(hwnd, &ps);
             return 0;
+        }
+        case WM_TIMER:{
+              if (runperframe) runperframe();
+            //  InvalidateRect(hwnd, NULL, FALSE);
+              return 0;
         }
         case WM_CLOSE:{
 			  DestroyWindow(hwnd); PostQuitMessage(0);          // 點右上角 X 時
