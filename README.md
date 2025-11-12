@@ -1,4 +1,4 @@
-![GitHub stars](https://img.shields.io/github/stars/user19870/EasyWinGui?style=social)
+![GitHub stars](https://img.shields.io/github/stars/user19870/EasyWinGui)
 ![License](https://img.shields.io/github/license/user19870/EasyWinGui)
 # EasyWinGui
  **EasyWinGui: a simple gui library for c++ ---windows only**
