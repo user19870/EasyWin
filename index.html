@@ -1,109 +1,373 @@
 <!DOCTYPE html>
-<html lang="en-US"><head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
- <meta name="google-site-verification" content="QCuFyMM8Uy6wFi4eD1HH5wX1RbuF5_WY4HkLrbmPLXE" />
-<!-- Begin Jekyll SEO tag v2.8.0 -->
-<title>EasyWinGui | EasyWinGui: a simple gui library for c++ —windows only</title>
-<meta name="generator" content="Jekyll v3.10.0">
-  <meta name="google-site-verification" content="QCuFyMM8Uy6wFi4eD1HH5wX1RbuF5_WY4HkLrbmPLXE" />
-<meta property="og:title" content="EasyWinGui">
-<meta property="og:locale" content="en_US">
-<meta name="description" content="EasyWinGui: a simple gui library for c++ —windows only">
-<meta property="og:description" content="EasyWinGui: a simple gui library for c++ —windows only">
-<link rel="canonical" href="https://user19870.github.io/EasyWinGui/">
-<meta property="og:url" content="https://user19870.github.io/EasyWinGui/">
-<meta property="og:site_name" content="EasyWinGui">
-<meta property="og:type" content="website">
-<meta name="twitter:card" content="summary">
-<meta property="twitter:title" content="EasyWinGui">
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebSite","description":"EasyWinGui: a simple gui library for c++ —windows only","headline":"EasyWinGui","name":"EasyWinGui","url":"https://user19870.github.io/EasyWinGui/"}</script>
-<!-- End Jekyll SEO tag -->
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="google-site-verification" content="OzHYlloanx-BnFFpd_E4qNPjU9QOTQiaJ_TsdYXsJEk" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>EasyWinGui</title>
+    <meta name="description" content="EasyWinGui: a simple gui library for c++ ---windows only">
 
-    <style class="anchorjs"></style><link rel="stylesheet" href="/EasyWinGui/assets/css/style.css?v=a905a6530e38e461631c04e3d8a124616b6aeb52">
-    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
 
-<!-- Setup Google Analytics -->
+    <style>
+        :root {
+            --primary: #04aa6d;
+            --primary-dark: #038c5a;
+            --bg: #f1f1f1;
+            --sidebar-bg: #2d2d2d;
+            --text: #333;
+            --text-light: #666;
+            --border: #ddd;
+            --code-bg: #f7f7f7;
+            --code-border: #e1e1e1;
+            --hover: #e8f5e8;
+        }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+        }
 
-<!-- You can set your favicon here -->
-<!-- link rel="shortcut icon" type="image/x-icon" href="/EasyWinGui/favicon.ico" -->
+        /* 語言切換按鈕 */
+        .lang-switcher {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 1000;
+            background: white;
+            padding: 0.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
 
-<!-- end custom head snippets -->
+        .lang-btn {
+            padding: 0.4rem 0.8rem;
+            border: 1px solid var(--border);
+            background: #fff;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
 
-  </head>
-  <body><img src="https://img.shields.io/github/stars/user19870/EasyWinGui?style=social" alt="GitHub stars"> <img src="https://img.shields.io/github/license/user19870/EasyWinGui" alt="License"><h1>EasyWinGui
-</h1><hr>
-      <strong>EasyWinGui: a simple gui library
-for c++ —windows only</strong><h2>install</h2><hr><p>set the folder put easywingui.h in devc++ like ......\w\include or something in vscode setting</p>
-<h3 id="feature">feature</h3>
-<ul>
-<li>xxx.creatw(L”title”,weight,height) &gt;is used to creat a
-window(only show one window)`</li>
-<li>xxx.button(L”buttonText”,x,y,weight,height,func) &gt; can creat a
-button and call a void function with no parameter when click the button
-(y=0 is top,not bottom)</li>
-<li>xxx.inputbox(“id”,x,y,weight,height,func) &gt; can creat an inputbox
-with its own id, func is same as that in button but usually be
-nullptr</li>
-<li>xxx.getinput_w(“id”) or .getinput_s(“id”) &gt; is method to get
-index from an inputbox with specific id and w/s is wchar_t/string
-(char*)</li>
-<li>xxx.loopAndStopProcessing() &gt; without loopAndStopProcessing() the
-window will close quickly. It must be put after th last feature because
-when it is called button/inputbox won’t update anymore</li>
-<li>xxx.runMessage(func) &gt; like previous one but you need to put it
-in your own loop and throw a void(no parameter) when running your loop
-,you can update something throught the void</li>
-<li><h4>more features in <a href="https://github.com/user19870/EasyWinGui/tree/First/example/simple">simple</a>  and <a href="https://github.com/user19870/EasyWinGui/tree/First/example/detailed">detailed</a></h4>
-</li>
-</ul><h3>example</h3>
-<div class="sourceCode" id="cb1"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>  <span class="pp">#include</span><span class="im">&lt;stdio.h&gt;</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="pp">#include </span><span class="im">"easywingui.h"</span><span class="pp"> </span><span class="co">// or &lt;easywingui.h&gt;</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a> <span class="kw">using</span> <span class="kw">namespace</span> easywingui<span class="op">;</span>easyw c<span class="op">;</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>   <span class="dt">void</span> c1<span class="op">(){</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>   <span class="dt">wchar_t</span><span class="op">*</span> td <span class="op">=</span>c<span class="op">.</span>getinput_w<span class="op">(</span><span class="st">"id1"</span><span class="op">);</span>MessageBox<span class="op">(</span>NULL<span class="op">,</span>td<span class="op">,</span><span class="st">L""</span><span class="op">,</span>MB_ICONEXCLAMATION <span class="op">|</span> MB_YESNO<span class="op">);</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a> <span class="op">}</span> </span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a> <span class="dt">void</span> c2<span class="op">(){</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>   <span class="dt">wchar_t</span><span class="op">*</span> td <span class="op">=</span>c<span class="op">.</span>getinput_w<span class="op">(</span><span class="st">"id2"</span><span class="op">);</span>MessageBox<span class="op">(</span>NULL<span class="op">,</span>td<span class="op">,</span><span class="st">L""</span><span class="op">,</span>MB_ICONEXCLAMATION <span class="op">|</span> MB_YESNO<span class="op">);</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a> <span class="op">}</span> </span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a> <span class="dt">int</span> main<span class="op">(){</span> </span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    c<span class="op">.</span>creatw<span class="op">(</span><span class="st">L"hellowinTitle"</span><span class="op">,</span><span class="dv">400</span><span class="op">,</span><span class="dv">400</span><span class="op">);</span>c<span class="op">.</span>button<span class="op">(</span><span class="st">L"textinbutton"</span><span class="op">,</span><span class="dv">150</span><span class="op">,</span><span class="dv">500</span><span class="op">,</span><span class="dv">100</span><span class="op">,</span><span class="dv">100</span><span class="op">,</span>c1<span class="op">);</span>c<span class="op">.</span>inputbox<span class="op">(</span><span class="st">"id1"</span><span class="op">,</span><span class="dv">500</span><span class="op">,</span><span class="dv">150</span><span class="op">,</span><span class="dv">100</span><span class="op">,</span><span class="dv">100</span><span class="op">,</span><span class="kw">nullptr</span><span class="op">);</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>     c<span class="op">.</span>button<span class="op">(</span><span class="st">L"textinbutton"</span><span class="op">,</span><span class="dv">1500</span><span class="op">,</span><span class="dv">500</span><span class="op">,</span><span class="dv">100</span><span class="op">,</span><span class="dv">100</span><span class="op">,</span>c2<span class="op">);</span>c<span class="op">.</span>inputbox<span class="op">(</span><span class="st">"id2"</span><span class="op">,</span><span class="dv">500</span><span class="op">,</span><span class="dv">300</span><span class="op">,</span><span class="dv">100</span><span class="op">,</span><span class="dv">100</span><span class="op">,</span><span class="kw">nullptr</span><span class="op">);</span>c<span class="op">.</span>loopAndStopProcessing<span class="op">();</span>  </span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a> <span class="op">}</span></span></code></pre></div>
-<h2 id="安裝">安裝</h2><hr><strong>在dev c++設定放easywingui.h的目錄如....\w\include 或在vscode的類似設定</strong><h3>功能</h3>
-<ul>
-<li>xxx.creatw(L"title",weight,height) &gt;用於創建視窗(一次只能顯示一個)</li>
-<li>xxx.button(L"buttonText",x,y,weight,height,func) &gt; 創建按鈕且按下可呼叫無參數void 函數，但被呼叫函數寫func而不是func()</li>
-<li>xxx.inputbox("id",x,y,weight,height,func) &gt; 創建輸入框並為輸入框設定字串id，func欄位 和button()相同但通常設為nullptr</li>
-<li>xxx.getinput_w("id") or .getinput_s("id") &gt; 可以從指定id的輸入框獲得寬字串、字串</li>
-<li>xxx.loopAndStopProcessing() &gt; 有這個才能避免視窗閃退，但呼叫後按鈕、輸入框等物件不能更新或新增</li>
-<li>xxx.runMessage(func) &gt; 跟上個類似，但你必須自己寫一個循環並把它放進去，func可以放一個無參數void用來更新東西</li>
-<li><h4>更多功能在   <a href="https://github.com/user19870/EasyWinGui/tree/First/example/simple">簡易用法</a>  和 <a href="https://github.com/user19870/EasyWinGui/tree/First/example/detailed">精細用法</a></h4>
-</li>
-</ul><h3>範例</h3>
-<div class="sourceCode" id="cb2"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>  <span class="pp">#include</span><span class="im">&lt;stdio.h&gt;</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="pp">#include </span><span class="im">"easywingui.h"</span><span class="pp"> </span><span class="co">//或&lt;easywingui.h&gt;</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a> <span class="kw">using</span> <span class="kw">namespace</span> easywingui<span class="op">;</span>easyw c<span class="op">;</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>   <span class="dt">void</span> c1<span class="op">(){</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>   <span class="dt">wchar_t</span><span class="op">*</span> td <span class="op">=</span>c<span class="op">.</span>getinput_w<span class="op">(</span><span class="st">"id1"</span><span class="op">);</span>MessageBox<span class="op">(</span>NULL<span class="op">,</span>td<span class="op">,</span><span class="st">L""</span><span class="op">,</span>MB_ICONEXCLAMATION <span class="op">|</span> MB_YESNO<span class="op">);</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a> <span class="op">}</span> </span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a> <span class="dt">void</span> c2<span class="op">(){</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>   <span class="dt">wchar_t</span><span class="op">*</span> td <span class="op">=</span>c<span class="op">.</span>getinput_w<span class="op">(</span><span class="st">"id2"</span><span class="op">);</span>MessageBox<span class="op">(</span>NULL<span class="op">,</span>td<span class="op">,</span><span class="st">L""</span><span class="op">,</span>MB_ICONEXCLAMATION <span class="op">|</span> MB_YESNO<span class="op">);</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a> <span class="op">}</span> </span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a> <span class="dt">int</span> main<span class="op">(){</span> </span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    c<span class="op">.</span>creatw<span class="op">(</span><span class="st">L"你好"</span><span class="op">,</span><span class="dv">400</span><span class="op">,</span><span class="dv">400</span><span class="op">);</span>c<span class="op">.</span>button<span class="op">(</span><span class="st">L"按鈕"</span><span class="op">,</span><span class="dv">150</span><span class="op">,</span><span class="dv">500</span><span class="op">,</span><span class="dv">100</span><span class="op">,</span><span class="dv">100</span><span class="op">,</span>c1<span class="op">);</span>c<span class="op">.</span>inputbox<span class="op">(</span><span class="st">"id1"</span><span class="op">,</span><span class="dv">500</span><span class="op">,</span><span class="dv">150</span><span class="op">,</span><span class="dv">100</span><span class="op">,</span><span class="dv">100</span><span class="op">,</span><span class="kw">nullptr</span><span class="op">);</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>     c<span class="op">.</span>button<span class="op">(</span><span class="st">L"按鈕"</span><span class="op">,</span><span class="dv">1500</span><span class="op">,</span><span class="dv">500</span><span class="op">,</span><span class="dv">100</span><span class="op">,</span><span class="dv">100</span><span class="op">,</span>c2<span class="op">);</span>c<span class="op">.</span>inputbox<span class="op">(</span><span class="st">"id2"</span><span class="op">,</span><span class="dv">500</span><span class="op">,</span><span class="dv">300</span><span class="op">,</span><span class="dv">100</span><span class="op">,</span><span class="dv">100</span><span class="op">,</span><span class="kw">nullptr</span><span class="op">);</span>c<span class="op">.</span>loopAndStopProcessing<span class="op">();</span>  </span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a> <span class="op">}</span></span></code></pre></div>
-</body></html>
+        .lang-btn.active,
+        .lang-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* 側邊欄 */
+        .sidebar {
+            width: 280px;
+            background: var(--sidebar-bg);
+            color: white;
+            padding: 1.5rem 0;
+            position: fixed;
+            height: 100%;
+            overflow-y: auto;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            text-align: center;
+            padding: 0 1.5rem 1.5rem;
+            border-bottom: 1px solid #444;
+            margin-bottom: 1rem;
+        }
+
+        .logo h1 { font-size: 1.5rem; font-weight: 700; }
+        .logo p { font-size: 0.9rem; color: #aaa; margin-top: 0.25rem; }
+
+        .nav-menu { list-style: none; }
+        .nav-menu a {
+            display: block;
+            padding: 0.75rem 1.5rem;
+            color: #ddd;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+        .nav-menu a:hover, .nav-menu a.active {
+            background: var(--primary);
+            color: white;
+            font-weight: 500;
+        }
+
+        /* 主內容區 */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 2rem;
+            max-width: 900px;
+        }
+
+        .content {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid var(--border);
+        }
+
+        h1,a, h2, h3 { color: var(--primary); margin-bottom: 0.75rem; }
+        h2 {
+            font-size: 1.6rem;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.5rem;
+            margin-top: 2rem;
+        }
+        h3 { font-size: 1.25rem; margin-top: 1.5rem; }
+
+        p { margin-bottom: 1rem; color: var(--text); }
+
+        .note {
+            background: #d4edda;
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 0 4px 4px 0;
+            color: #155724;
+        }
+
+        .code-block {
+            background: var(--code-bg);
+            border: 1px solid var(--code-border);
+            padding: 1rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: 'Source Code Pro', monospace;
+            font-size: 0.95rem;
+            margin: 1rem 0;
+            position: relative;
+        }
+
+        .code-block::before {
+            content: attr(data-label);
+            position: absolute;
+            top: -10px;
+            left: 12px;
+            background: white;
+            padding: 0 8px;
+            font-size: 0.8rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .btn-try {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+        .btn-try:hover { background: var(--primary-dark); }
+
+        /* 響應式 */
+        @media (max-width: 992px) {
+            .sidebar { width: 240px; }
+            .main-content { margin-left: 240px; }
+        }
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+            .sidebar { width: 100%; height: auto; position: relative; }
+            .main-content { margin-left: 0; padding: 1rem; }
+            .lang-switcher { top: 0.5rem; right: 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 語言切換器 -->
+    <div class="lang-switcher">
+        <button class="lang-btn active" data-lang="zh-TW">中文</button>
+        <button class="lang-btn" data-lang="en">English</button>
+    </div>
+
+    <!-- 側邊欄 -->
+    <nav class="sidebar">
+        <div class="logo">
+            <h1> EasyWinGui</h1>  
+            <p data-i18n="logo-subtitle">輕量 C++ GUI 函式庫</p>
+        </div>
+        <ul class="nav-menu">
+            <li><a href="#intro" class="active" data-i18n="nav-getting-started">開始使用</a></li>
+            <li><a href="#window" data-i18n="nav-create-window">建立視窗</a></li>
+            <li><a href="#button" data-i18n="nav-button">按鈕元件</a></li>
+            <li><a href="#label" data-i18n="nav-label">文字標籤</a></li>
+            <li><a href="#input" data-i18n="nav-input">輸入框</a></li>
+            <li><a href="#layout" data-i18n="nav-checkbox">勾選框</a></li>
+        </ul>
+    </nav>
+
+    <!-- 主內容 -->
+    <main class="main-content">
+        <div class="content">
+
+            <section id="intro">
+                <h1 data-i18n="getting-started-title">開始使用 EasyWinGui</h1>
+                
+                <p data-i18n="getting-started-desc">歡迎學習 <strong>EasyWinGui</strong> —— 一個純 C++ 實作、輕量高效的 GUI 函式庫。</p>
+                
+                <div class="note">
+                    <strong data-i18n="note-platforms">支援平台：</strong> Windows<br>
+                    <strong data-i18n="note-requirement">最低需求： C++11 編譯器</strong> 
+                     <br><a href="https://github.com/user19870/EasyWinGui">github repo</a>
+                </div>
+
+                <h2 data-i18n="install-title">安裝方式</h2>
+                <!--<p data-i18n="install-cmake">將檔案加入你的  專案：</p>
+                <div class="code-block" data-label="CMake">
+add_subdirectory(EasyGUI)<br>
+target_link_libraries(your_app EasyGUI)
+                </div>-->
+                <p data-i18n="install-header">將 <code>include/easywingui.h</code> 加入編譯路徑。</p>
+            </section>
+
+            <section id="window">
+                <h2 data-i18n="window-title">建立第一個視窗</h2>
+                <p data-i18n="window-desc">使用 <code>Window</code> 類別快速建立主視窗。</p>
+                <div class="code-block" data-label="C++">
+                    <code>
+#include &lteasywingui.h&gt <br>
+using namespace easywingui;easyw app;<br>
+int main() {<br>
+ app.creatw(L"title",1920,1200);<br>
+ app.loopAndStopProcessing(); // or while(1){app.runMessage(nullptr);Sleep(1);}<br>
+}</code>
+                </div>
+               <!-- <p><a href="#" class="btn-try" data-i18n="try-live">即時預覽效果</a></p>-->
+            </section>
+
+            <!-- 其他 section 省略，結構相同，僅標記 data-i18n -->
+            <!-- ... -->
+
+            <!--<div class="note" style="margin-top: 3rem;">
+                <p data-i18n="final-note">練習完所有章節了嗎？<br>
+                <a href="YOUR_GITHUB_LINK" target="_blank" style="color: var(--primary); font-weight: 600;" data-i18n="download-project">點此下載完整專案並開始開發！</a></p>
+            </div> -->
+
+        </div>
+    </main>
+
+    <!-- 多語言資料 -->
+    <script>
+        const translations = {
+            'zh-TW': {
+                'logo-title': '<a herf="https://github.com/user19870/EasyWinGui">EasyWinGui</a>',
+                'logo-subtitle': '簡易 C++ GUI 函式庫',
+                'nav-getting-started': '開始使用',
+                'nav-create-window': '建立視窗',
+                'nav-button': '按鈕元件',
+                'nav-label': '文字標籤',
+                'nav-input': '輸入框',
+                'nav-checkbox': '勾選框',
+                'getting-started-title': '開始使用 EasyWinGui',
+                'getting-started-desc': '歡迎學習 <strong>EasyWinGui</strong> —— 一個只含標頭檔的簡單的C++ GUI庫。',
+                'note-platforms': '支援平台：',
+                'note-requirement': '最低需求： C++11 編譯器',
+                'install-title': '安裝方式',
+                'install-header': '將 <code>include/easywingui.h</code> 加入編譯路徑。',
+                'window-title': '建立第一個視窗',
+                'window-desc': '使用 <code>EasyWinGui</code> 類別快速建立主視窗。',
+                'try-live': '即時預覽效果',
+                'final-note': '練習完所有章節了嗎？<br>',
+                'download-project': '點此下載完整專案並開始開發！'
+            },
+            'en': {
+                'logo-title': 'EasyWinGui',
+                'logo-subtitle': ' Simple C++ GUI library',
+                'nav-getting-started': 'Getting Started',
+                'nav-create-window': 'Create Window',
+                'nav-button': 'Button',
+                'nav-label': 'Label',
+                'nav-input': 'Input',
+                'nav-checkbox': 'Checkbox',
+                'getting-started-title': 'Getting Started with EasyGUI',
+                'getting-started-desc': 'Welcome to <strong>EasyWinGui</strong> —  a simple header-only gui library for c++ ---windows only.',
+                'note-platforms': 'Supported Platforms:',
+                'note-requirement': 'Minimum Requirement: C++11 Compiler',
+                'install-title': 'Installation',
+                'install-header': 'include the <code>include/easywingui.h</code> directory.',
+                'window-title': 'Create Your First Window',
+                'window-desc': 'Use the <code>EasyWinGui</code> class to quickly create a main window.',
+                'try-live': 'Live Preview',
+                'final-note': 'Finished all chapters?<br>',
+                'download-project': 'Download the full project and start building!'
+            }
+        };
+
+        // 語言切換函數
+        function setLanguage(lang) {
+            document.documentElement.lang = lang;
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    // 保留 HTML 標籤（如 <strong>）
+                    el.innerHTML = translations[lang][key];
+                }
+            });
+
+            // 更新按鈕狀態
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === lang);
+            });
+
+            // 更新標題
+            document.title = lang === 'en' ? 'EasyWinGui - Tutorial' : 'EasyWinGui - 教學';
+        }
+
+        // 自動偵測語言
+        window.addEventListener('DOMContentLoaded', () => {
+            const userLang = (navigator.language || navigator.userLanguage).split('-')[0];
+            const supported = ['zh', 'en'];
+            const defaultLang = supported.includes(userLang) ? (userLang === 'zh' ? 'zh-TW' : 'en') : 'zh-TW';
+            setLanguage(defaultLang);
+
+            // 綁定切換按鈕
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
+            });
+        });
+
+        // 原有滾動與選單高亮功能（保持不變）
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                document.querySelectorAll('.nav-menu a').forEach(a => a.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-menu a');
+            let current = '';
+            sections.forEach(sec => {
+                const secTop = sec.offsetTop - 100;
+                if (pageYOffset >= secTop) current = sec.getAttribute('id');
+            });
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+            });
+        });
+    </script>
+
+</body>
+</html>
