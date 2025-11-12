@@ -5,7 +5,7 @@
 #define NOMINMAX
 #include <windowsx.h>
 #include <windows.h>
-
+#include <commctrl.h>
  #ifndef _INC_STDIO
  #include <stdio.h>
  #endif
@@ -18,9 +18,17 @@
  */
 namespace easywingui {
 	struct Button {
-    HWND hButton;
+    HWND hButton; 
     void (*onClick)();
     Button* next; // 鏈結下一個
+    static void* operator new(size_t size) { void* ptr= malloc(size); return ptr;}
+    static void operator delete(void* ptr) {free(ptr);}
+};
+
+struct Checkbox {
+    HWND hButton;int ctrlId;
+    void (*onClick)();
+    Checkbox* next; // 鏈結下一個
     static void* operator new(size_t size) { void* ptr= malloc(size); return ptr;}
     static void operator delete(void* ptr) {free(ptr);}
 };
@@ -33,22 +41,24 @@ namespace easywingui {
     static void operator delete(void* ptr) {free(ptr);}
 };
     struct Label{
+    const char* id;
     HWND hLabel;
     Label* next;wchar_t labelbuf[256];
      static void* operator new(size_t size) { void* ptr= malloc(size); return ptr;}
     static void operator delete(void* ptr) {free(ptr);}
     };
-class easyw{
+    class easyw{
     private:
     Button* buttonHead = nullptr;Button* btn;Inputbox* itb;
 Button* buttonTail = nullptr;
 Label* labelHead = nullptr;Label* labelTail = nullptr;
     // --- 這兩個函式指標讓外部可以註冊 callback ---
-void (*onButtonClick)() = nullptr;
+void (*onButtonClick)() = nullptr;void (*oncheckClick)() = nullptr;
 void (*onInputChange)(const wchar_t*) = nullptr;
 void (*onChange)(const wchar_t*);
 Inputbox* inputboxHead = nullptr;
 Inputbox* inputboxTail = nullptr;
+Checkbox* checkHead = nullptr;Checkbox* checkTail = nullptr;
 HANDLE stopEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
 void (*runperframe)()=nullptr;
 ////////////////////////
@@ -56,11 +66,6 @@ void (*runperframe)()=nullptr;
 HWND hwnd = nullptr;
 volatile  bool running = false;
 
- 
-// 控件句柄（只記錄一個）
-//HWND hButton = nullptr;
-//HWND hEdit = nullptr;
-//狀態判斷
  
 // --- 結束循環 ---
  
@@ -83,6 +88,7 @@ inline void runMessage(void(*Runperframe)()){
             }  
 }
 inline void loopAndStopProcessing() {
+    
     	running = true;
    HANDLE handles[] = { stopEvent };
       //  HANDLE timerHandle = CreateWaitableTimer(NULL, FALSE, NULL);
@@ -112,7 +118,7 @@ inline void loopAndStopProcessing() {
 }
 // --- 建立視窗 ---
 inline void creatw(const wchar_t* title, int width, int height) {
-
+    
     const wchar_t CLASS_NAME[] = L"MyWindowClass";
     WNDCLASS wc = {};
   //  wc.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC; // <-- OwnDC 保證 OpenGL 有專屬 DC
@@ -176,15 +182,31 @@ char chbuf[256];
 wchar_t* findinputid(const char* inid){for(Inputbox* fid=inputboxHead;fid;fid=fid->next) {  if(strcmp(fid->id, inid) == 0)return fid->buf;} return nullptr;}
 inline char* getinput_s (const char* inputboxid ){ WideCharToMultiByte(CP_UTF8, 0, findinputid(inputboxid), -1, chbuf, sizeof(chbuf), nullptr, nullptr);return chbuf;}
 inline wchar_t* getinput_w(const char* inputboxid){return findinputid(inputboxid);}
-
-inline void label(const wchar_t* text,int x,int y, int w,int h,const char* left_cneter_right){
+// --- 加標籤 ---
+inline void label(const char* id,const wchar_t* text,int x,int y, int w,int h,const char* left_cneter_right){
     Label* lbl=new Label;DWORD SS_style= (strcmp(left_cneter_right,"left")==0)?SS_LEFT:((strcmp(left_cneter_right,"right")==0)?SS_RIGHT:SS_CENTER);
-    lbl->hLabel = CreateWindow(L"STATIC", text,
+    wcscpy(lbl->labelbuf, text); 
+    lbl->hLabel = CreateWindow(L"STATIC", lbl->labelbuf,
         WS_VISIBLE | WS_CHILD | SS_style,
         x, y, w, h, hwnd, nullptr, GetModuleHandle(nullptr), lbl);     
     lbl->next = nullptr;
+    lbl->id=id;
      if (!labelHead) { labelHead = labelTail = lbl; }
     else { labelTail->next = lbl; labelTail = lbl; }
+}
+ // --- 加複選框 ---
+inline bool checkbox(const wchar_t* text, int x, int y, int w, int h,void (*onClick)()) {
+ Checkbox* ckb=new Checkbox;static int ctrlId = 1000;
+    ckb->hButton = CreateWindow(L"BUTTON", text,
+        WS_VISIBLE | WS_CHILD | BS_AUTOCHECKBOX,
+        x, y, w, h, hwnd, nullptr, GetModuleHandle(nullptr), ckb);
+        ckb->onClick = onClick;
+        oncheckClick=onClick;
+    ckb->next = nullptr; 
+ 
+    if (!checkHead) { checkHead = checkTail = ckb; }
+    else { checkTail->next = ckb; checkTail = ckb; }
+    return (SendMessage(ckb->hButton, BM_GETCHECK, 0, 0) == BST_CHECKED);
 }
 // --- 改尺寸 ---
 inline void resize(int width, int height) {
@@ -198,6 +220,15 @@ inline void resize(int width, int height) {
        // loop();//導致訊息堵塞
     } 
 }
+inline void changelabel(const char* id,const wchar_t* newtext){
+    for(Label* cl=labelHead;cl;cl=cl->next){
+        if(strcmp(cl->id,id)==0){
+            wcscpy(cl->labelbuf,newtext);
+            SetWindowText(cl->hLabel,cl->labelbuf);
+            return;
+        }
+    }
+}
 //釋放資源
 inline void release() {
     // 刪除按鈕鏈表
@@ -205,6 +236,7 @@ inline void release() {
     // 刪除輸入框鏈表
     Inputbox* curItb = inputboxHead;while (curItb) {Inputbox* nextItb = curItb->next;DestroyWindow(curItb->hEdit);delete curItb; curItb = nextItb; }inputboxHead = inputboxTail = nullptr;
     Label* curlbl= labelHead; while (curlbl) {Label* nextlbl=curlbl->next; DestroyWindow(curlbl->hLabel); delete curlbl; curlbl=nextlbl;} labelHead=labelTail=nullptr;
+    Checkbox* curckb= checkHead; while (curckb) {Checkbox* nextckb=curckb->next; DestroyWindow(curckb->hButton); delete curckb; curckb=nextckb;} checkHead=checkTail=nullptr;
     
 } 
 // 核心
@@ -216,7 +248,15 @@ inline void release() {
             if (src == cur->hButton && HIWORD(wParam) == BN_CLICKED) {
             if (onButtonClick) cur->onClick();
           return 0; }
-                     }
+ }
+
+ for (Checkbox* cur = checkHead; cur; cur = cur->next) {
+    src = (HWND)lParam;
+            if (src == cur->hButton && HIWORD(wParam) == BN_CLICKED) {
+            if (oncheckClick) cur->onClick();
+          return 0; }
+ }
+
             for (Inputbox* dur = inputboxHead; dur; dur = dur->next) {
     if (src == dur->hEdit && HIWORD(wParam) == EN_CHANGE) {
         GetWindowText(dur->hEdit, dur->buf, 256);
@@ -252,6 +292,7 @@ inline void release() {
 		}
       
         case WM_DESTROY:
+        DestroyWindow(hwnd);
             running = false;
             PostQuitMessage(0);
              hwnd = nullptr;
