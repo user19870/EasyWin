@@ -201,15 +201,15 @@
     <nav class="sidebar">
         <div class="logo">
             <h1> EasyWinGui</h1>  
-            <p data-i18n="logo-subtitle">輕量 C++ GUI 函式庫</p>
+            <p data-i18n="logo-subtitle">Simple C++ GUI library</p>
         </div>
         <ul class="nav-menu">
-            <li><a href="#intro" class="active" data-i18n="nav-getting-started">開始使用</a></li>
-            <li><a href="#window" data-i18n="nav-create-window">建立視窗</a></li>
-            <li><a href="#button" data-i18n="nav-button">按鈕元件</a></li>
-            <li><a href="#label" data-i18n="nav-label">文字標籤</a></li>
-            <li><a href="#input" data-i18n="nav-input">輸入框</a></li>
-            <li><a href="#layout" data-i18n="nav-checkbox">勾選框</a></li>
+            <li><a href="#intro" class="active" data-i18n="nav-getting-started">Getting Started</a></li>
+            <li><a href="#window" data-i18n="nav-create-window">Create Window</a></li>
+            <li><a href="#button" data-i18n="nav-button">Button</a></li>
+            <li><a href="#label" data-i18n="nav-label">Label</a></li>
+            <li><a href="#input" data-i18n="nav-input">Input</a></li>
+            <li><a href="#layout" data-i18n="nav-checkbox">Checkbox</a></li>
         </ul>
     </nav>
 
@@ -218,28 +218,28 @@
         <div class="content">
 
             <section id="intro">
-                <h1 data-i18n="getting-started-title">開始使用 EasyWinGui</h1>
+                <h1 data-i18n="getting-started-title">Getting Started with EasyGUI</h1>
                 
-                <p data-i18n="getting-started-desc">歡迎學習 <strong>EasyWinGui</strong> —— 一個純 C++ 實作、輕量高效的 GUI 函式庫。</p>
+                <p data-i18n="getting-started-desc">Welcome to <strong>EasyWinGui</strong> —  a simple header-only gui library for c++ ---windows only.</p>
                 
                 <div class="note">
-                    <strong data-i18n="note-platforms">支援平台：</strong> Windows<br>
-                    <strong data-i18n="note-requirement">最低需求： C++11 編譯器</strong> 
+                    <strong data-i18n="note-platforms">Supported Platforms:</strong> Windows<br>
+                    <strong data-i18n="note-requirement">Minimum Requirement: C++11 Compiler</strong> 
                      <br><a href="https://github.com/user19870/EasyWinGui">github repo</a>
                 </div>
 
-                <h2 data-i18n="install-title">安裝方式</h2>
+                <h2 data-i18n="install-title">Installation</h2>
                 <!--<p data-i18n="install-cmake">將檔案加入你的  專案：</p>
                 <div class="code-block" data-label="CMake">
 add_subdirectory(EasyGUI)<br>
 target_link_libraries(your_app EasyGUI)
                 </div>-->
-                <p data-i18n="install-header">將 <code>include/easywingui.h</code> 加入編譯路徑。</p>
+                <p data-i18n="install-header">include the <code>include/easywingui.h</code> directory.</p>
             </section>
 
             <section id="window">
-                <h2 data-i18n="window-title">建立第一個視窗</h2>
-                <p data-i18n="window-desc">使用 <code>Window</code> 類別快速建立主視窗。</p>
+                <h2 data-i18n="window-title">Create Your First Window</h2>
+                <p data-i18n="window-desc">Use the <code>EasyWinGui</code> class to quickly create a main window.</p>
                 <div class="code-block" data-label="C++">
                     <code>
 #include &lteasywingui.h&gt <br>
