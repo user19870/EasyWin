@@ -44,19 +44,24 @@ struct Checkbox {
     const char* id;
     HWND hLabel;
     Label* next;wchar_t labelbuf[256];
+    HBITMAP hBitmap;
      static void* operator new(size_t size) { void* ptr= malloc(size); return ptr;}
     static void operator delete(void* ptr) {free(ptr);}
     };
+    
+  
     class easyw{
     private:
     Button* buttonHead = nullptr;Button* btn;Inputbox* itb;
 Button* buttonTail = nullptr;
 Label* labelHead = nullptr;Label* labelTail = nullptr;
+Label* imgHead = nullptr;Label* imgTail = nullptr;
     // --- 這兩個函式指標讓外部可以註冊 callback ---
 void (*onButtonClick)() = nullptr;void (*oncheckClick)() = nullptr;
 void (*onInputChange)(const wchar_t*) = nullptr;
 void (*onChange)(const wchar_t*);
 Inputbox* inputboxHead = nullptr;
+HWND hScrollBar;
 Inputbox* inputboxTail = nullptr;
 Checkbox* checkHead = nullptr;Checkbox* checkTail = nullptr;
 HANDLE stopEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
@@ -208,6 +213,18 @@ inline bool checkbox(const wchar_t* text, int x, int y, int w, int h,void (*onCl
     else { checkTail->next = ckb; checkTail = ckb; }
     return (SendMessage(ckb->hButton, BM_GETCHECK, 0, 0) == BST_CHECKED);
 }
+
+inline void staticImage(const wchar_t* bmpPath,int x,int y,int w,int h){
+    Label* img=new Label;
+     img->hBitmap = (HBITMAP)LoadImageW(NULL, bmpPath, IMAGE_BITMAP, w, h, LR_LOADFROMFILE);
+       img->hLabel = CreateWindowW(L"STATIC", NULL, WS_VISIBLE | WS_CHILD | SS_BITMAP,
+        x, y, w, h, hwnd, NULL, GetModuleHandle(nullptr), NULL);
+    SendMessageW(img->hLabel, STM_SETIMAGE, IMAGE_BITMAP, (LPARAM)img->hBitmap);
+     img->next = nullptr;
+     if (!imgHead) { imgHead = imgTail = img; }
+    else { imgTail->next = img; imgTail = img; }
+
+}
 // --- 改尺寸 ---
 inline void resize(int width, int height) {
     //stoploop();
@@ -237,7 +254,7 @@ inline void release() {
     Inputbox* curItb = inputboxHead;while (curItb) {Inputbox* nextItb = curItb->next;DestroyWindow(curItb->hEdit);delete curItb; curItb = nextItb; }inputboxHead = inputboxTail = nullptr;
     Label* curlbl= labelHead; while (curlbl) {Label* nextlbl=curlbl->next; DestroyWindow(curlbl->hLabel); delete curlbl; curlbl=nextlbl;} labelHead=labelTail=nullptr;
     Checkbox* curckb= checkHead; while (curckb) {Checkbox* nextckb=curckb->next; DestroyWindow(curckb->hButton); delete curckb; curckb=nextckb;} checkHead=checkTail=nullptr;
-    
+    Label* curimg= imgHead; while (curimg) {Label* nextimg=curimg->next; DeleteObject(curimg->hBitmap); DestroyWindow(curimg->hLabel); delete curimg; curimg=nextimg;} imgHead=imgTail=nullptr;
 } 
 // 核心
      LRESULT CALLBACK procfeature(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
@@ -287,12 +304,12 @@ inline void release() {
               return 0;
         }
         case WM_CLOSE:{
-			  DestroyWindow(hwnd); PostQuitMessage(0);          // 點右上角 X 時
+			  DestroyWindow(hwnd); release(); PostQuitMessage(0);          // 點右上角 X 時
         return 0;
 		}
       
         case WM_DESTROY:
-        DestroyWindow(hwnd);
+        DestroyWindow(hwnd); release();
             running = false;
             PostQuitMessage(0);
              hwnd = nullptr;
