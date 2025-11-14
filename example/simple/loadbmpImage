@@ -1,0 +1,9 @@
+#include <easywingui.h>
+using namespace easywingui;
+easyw c;
+int main(){
+    c.creatw(L"ICON",800,600);
+    c.staticImage(L"test.bmp",50,50,200,200);c.staticImage(L"test2.bmp",300,50,200,200);
+    c.loopAndStopProcessing();
+    return 0;
+}
